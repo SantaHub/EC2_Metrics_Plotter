@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Ec2 metrics plotter : EC2 instance CloudWatch metrics plotter.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Ec2 metrics plotter</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/alexbuz/EC2_Metrics_Plotter">View on GitHub</a>
+
+          <h1 id="project_title">Ec2 metrics plotter</h1>
+          <h2 id="project_tagline">EC2 instance CloudWatch metrics plotter.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/alexbuz/EC2_Metrics_Plotter/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/alexbuz/EC2_Metrics_Plotter/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="cloudwatch-awsec2-instance-metrics-plotter" class="anchor" href="#cloudwatch-awsec2-instance-metrics-plotter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CloudWatch AWS/EC2 instance metrics plotter.</h1>
+
+<p>Purpose:</p>
+
+<ul>
+<li>Generate and plot statistics for CloudWatch EC2 instance.</li>
+<li>All Metrics and statistics are supported</li>
+</ul>
+
+<p>Included:</p>
+
+<ul>
+<li><p><em>Statistics</em>:
+Sum,Maximum,Minimum,SampleCount,Average</p></li>
+<li><p><em>Metrics</em>:
+CPUUtilization,NetworkIn,NetworkOut,NetworkPacketsIn,
+NetworkPacketsOut,DiskWriteBytes,DiskReadBytes,DiskWriteOps,
+DiskReadOps,CPUCreditBalance,CPUCreditUsage,StatusCheckFailed,
+StatusCheckFailed_Instance,StatusCheckFailed_System</p></li>
+</ul>
+
+<p>Wrote using Python/boto3.
+Compiled using PyInstaller</p>
+
+<h2>
+<a id="version" class="anchor" href="#version" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Version</h2>
+
+<table>
+<thead>
+<tr>
+<th>OS</th>
+<th>Platform</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td>32bit</td>
+<td>[0.1.0 beta]</td>
+</tr>
+</tbody>
+</table>
+
+<h2>
+<a id="purpose" class="anchor" href="#purpose" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Purpose</h2>
+
+<ul>
+<li>Generate plots for AWS-ECS metrics and statistics.</li>
+<li>Helps you generate plots on demand and review them using generated html report.</li>
+</ul>
+
+<h2>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How it works</h2>
+
+<ul>
+<li>plotEC2metrics.exe connects to EC2 and reads datapoints for given CloudWatch EC2 instance/metric/statistic combo.</li>
+<li>Using matplotlib plot is created and saved on the filesystem.</li>
+<li>Html report is generated allowing preview saved metric plots.</li>
+<li>It will not work for group CloudWatch EC2 instances metrics.</li>
+</ul>
+
+<h2>
+<a id="audience" class="anchor" href="#audience" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Audience</h2>
+
+<p>Database/ETL developers, Data Integrators, Data Engineers, Business Analysts, AWS Developers, DevOps</p>
+
+<h2>
+<a id="designated-environment" class="anchor" href="#designated-environment" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Designated Environment</h2>
+
+<p>Pre-Prod (UAT/QA/DEV)</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<pre><code>C:\Python35-32&gt;dist\ec2metrics\ec2metrics.exe
+## Plots EC2 CPUUtilization metric for given instance id.
+##
+## Generates matplotlib plots for given instance/statistic/metric.
+##
+Usage:
+  set AWS_ACCESS_KEY_ID=&lt;you access key&gt;
+  set AWS_SECRET_ACCESS_KEY=&lt;you secret key&gt;
+  set AWS_DEFAULT_REGION=&lt;your region &gt; (for example:us-west-2 )
+  ec2metrics.exe [&lt;instance&gt;] [&lt;period_min&gt;] [&lt;from_min&gt;] [&lt;to_min&gt;]
+        [&lt;statistic&gt;] [&lt;metric_name&gt;] [&lt;namespace&gt;]
+        [&lt;show_plot&gt; or &lt;show_report&gt;]
+        [&lt;plot_dir&gt;] [&lt;plot_dir&gt;]
+
+        [-b] --instance         -- EC2 instance name (i-********).
+        [-p] --period_min       -- Aggregation interval (5 min).
+        [-f] --from_min         -- Start from, min (60).
+        [-t] --to_min           -- End at, min (0 - present).
+        [-s] --statistic        -- Statistic type (Average).
+           Could be one of: Sum,Maximum,Minimum,SampleCount,Average
+        [-m] --metric_name  -- Metric name (CPUUtilization)
+           Could be one of:
+                CPUUtilization,NetworkIn,NetworkOut,NetworkPacketsIn,
+                NetworkPacketsOut,DiskWriteBytes,DiskReadBytes,DiskWriteOps,
+                DiskReadOps,CPUCreditBalance,CPUCreditUsage,StatusCheckFailed,
+                StatusCheckFailed_Instance,StatusCheckFailed_System
+        [-g] --namespace        -- CloudWatch namespace,
+        container for metric (AWS/EC2).
+
+        [-r] --show_plot        -- Open plotter window (False).
+        [-n] --show_report  -- Open browser with html report (True).
+
+        [-d] --plot_dir         -- Target plot dir (plots).
+        [-e] --plot_dir         -- Timestamp for to append to plot_dir
+        (current date).
+
+        Index.html is generated in &lt;plot_dir&gt;\&lt;timestamp&gt;
+
+</code></pre>
+
+<h2>
+<a id="environment-variables" class="anchor" href="#environment-variables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Environment variables</h2>
+
+<pre><code>  set AWS_ACCESS_KEY_ID=&lt;you access key&gt;
+  set AWS_SECRET_ACCESS_KEY=&lt;you secret key&gt;
+  set AWS_DEFAULT_REGION=&lt;your region &gt; (for example:us-west-2 )
+</code></pre>
+
+<h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h1>
+
+<h3>
+<a id="plot-averageminimum-for-networkin-cloudwatch-ec2-metric" class="anchor" href="#plot-averageminimum-for-networkin-cloudwatch-ec2-metric" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plot "Average,Minimum" for "NetworkIn" CloudWatch EC2 metric.</h3>
+
+<pre><code>ec2metrics.exe --instance i-fe9cea26 -f 1000  -p 10  -s Average,Minimum -m NetworkIn  -r
+
+200(0100/0100): i-fe9cea26: NetworkIn: Sum
+200(0100/0100): i-fe9cea26: NetworkIn: Maximum
+200(0100/0100): i-fe9cea26: NetworkIn: Minimum
+200(0100/0100): i-fe9cea26: NetworkIn: SampleCount
+200(0100/0100): i-fe9cea26: NetworkIn: Average
+
+Report is at: C:\Python35-32\plots\20160327_220118\index.html
+
+</code></pre>
+
+<h4>
+<a id="result" class="anchor" href="#result" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Result:</h4>
+
+<p><img src="https://raw.githubusercontent.com/alexbuz/EC2_Metrics_Plotter/master/plots/EC2_NetworkIn/by_metric/NetworkIn/Average/10/NetworkIn.Average.10.i-fe9cea26.png" alt="NetworkIn/Average/10min"></p>
+
+<h4>
+<a id="html-report" class="anchor" href="#html-report" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Html report</h4>
+
+<p>Report is generated with preview for all plots created with this job.
+<img src="https://raw.githubusercontent.com/alexbuz/EC2_Metrics_Plotter/master/plot_reports/networkin.png" alt="ALL"></p>
+
+<h3>
+<a id="plot-summaximumminimumsamplecountaverage-stats-for-cpuutilization-cloudwatch-ec2-metric" class="anchor" href="#plot-summaximumminimumsamplecountaverage-stats-for-cpuutilization-cloudwatch-ec2-metric" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plot "Sum,Maximum,Minimum,SampleCount,Average" stats for "CPUUtilization" CloudWatch EC2 metric.</h3>
+
+<pre><code>ec2metrics.exe --instance i-fe9cea26 -f 500  -p 1  -s Sum,Maximum,Minimum,SampleCount,Average -m CPUUtilization  -r
+200(0084/0099): i-fe9cea26: CPUUtilization: Sum
+200(0084/0099): i-fe9cea26: CPUUtilization: Maximum
+200(0000/0099): i-fe9cea26: CPUUtilization: Minimum
+200(0099/0099): i-fe9cea26: CPUUtilization: SampleCount
+200(0084/0099): i-fe9cea26: CPUUtilization: Average
+
+Report is at: c:\Python35-32\plots\20160328_113906\index.html
+
+</code></pre>
+
+<h4>
+<a id="result-1" class="anchor" href="#result-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Result:</h4>
+
+<p><img src="https://raw.githubusercontent.com/alexbuz/EC2_Metrics_Plotter/master/plots/CPUUtilization/by_instance/i-fe9cea26/1/CPUUtilization.Average.1.i-fe9cea26.png" alt="CPUCreditUsage/Average/30min"></p>
+
+<h3>
+<a id="plot-summaximumminimumsamplecountaverage-stats-for-cpucreditusage-cloudwatch-ec2-metric" class="anchor" href="#plot-summaximumminimumsamplecountaverage-stats-for-cpucreditusage-cloudwatch-ec2-metric" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plot "Sum,Maximum,Minimum,SampleCount,Average" stats for "CPUCreditUsage" CloudWatch EC2 metric.</h3>
+
+<pre><code>ec2metrics.exe --instance i-fe9cea26 -f 6000  -p 30  -s Sum,Maximum,Minimum,SampleCount,Average -m CPUCreditUsage  -r -t 3000 -e CPUCreditUsage
+200(0006/0027): i-fe9cea26: CPUCreditUsage: Sum
+200(0006/0027): i-fe9cea26: CPUCreditUsage: Maximum
+200(0001/0027): i-fe9cea26: CPUCreditUsage: Minimum
+200(0027/0027): i-fe9cea26: CPUCreditUsage: SampleCount
+200(0006/0027): i-fe9cea26: CPUCreditUsage: Average
+Report is at: c:\Python35-32\plots\CPUCreditUsage\index.html
+
+</code></pre>
+
+<h4>
+<a id="result-2" class="anchor" href="#result-2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Result:</h4>
+
+<p><img src="https://raw.githubusercontent.com/alexbuz/EC2_Metrics_Plotter/master/plots/CPUCreditUsage/by_metric/CPUCreditUsage/Average/30/CPUCreditUsage.Average.30.i-fe9cea26.png" alt="CPUCreditUsage/Average/30min"></p>
+
+<h3>
+<a id="plot-all-stats-for-all-cloudwatch-ec2-metrics" class="anchor" href="#plot-all-stats-for-all-cloudwatch-ec2-metrics" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plot all stats for all CloudWatch EC2 metrics.</h3>
+
+<pre><code>c:\Python35-32&gt;dist\ec2metrics\ec2metrics.exe --from_min 3000 --instance 'i-fe9cea26,i-fe9cea26' --metric_name CPUUtilization,NetworkIn,NetworkOut,NetworkPacketsIn,NetworkPacketsOut,DiskWriteBytes,DiskReadBytes,DiskWriteOps,DiskReadOps,CPUCreditBalance,CPUCreditUsage,StatusCheckFailed,StatusCheckFailed_Instance,StatusCheckFailed_System --namespace AWS/EC2 --period_min 1 --plot_dir C:\Python35-32\plots --statistic Average,Minimum,Maximum,Sum  --to_min 2000 -r -e All_Metrics
+
+200(0174/0200): i-fe9cea26: CPUUtilization: Average
+200(0001/0200): i-fe9cea26: CPUUtilization: Minimum
+200(0174/0200): i-fe9cea26: CPUUtilization: Maximum
+200(0174/0200): i-fe9cea26: CPUUtilization: Sum
+200(0200/0200): i-fe9cea26: NetworkIn: Average
+...
+200(0000/1000): i-fe9cea26: StatusCheckFailed_Instance: Sum
+200(0000/1000): i-fe9cea26: StatusCheckFailed_System: Average
+200(0000/1000): i-fe9cea26: StatusCheckFailed_System: Minimum
+200(0000/1000): i-fe9cea26: StatusCheckFailed_System: Maximum
+200(0000/1000): i-fe9cea26: StatusCheckFailed_System: Sum
+
+Report is at: C:\Python35-32\plots\All_Metrics\index.html
+
+</code></pre>
+
+<h4>
+<a id="result-3" class="anchor" href="#result-3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Result:</h4>
+
+<p>One of the plots:
+<img src="https://raw.githubusercontent.com/alexbuz/EC2_Metrics_Plotter/master/plots/CPUCreditBalance/by_instance/i-fe9cea26/30/CPUCreditBalance.Sum.30.i-fe9cea26.png" alt="NetworkIn/Average/10min"></p>
+
+<h4>
+<a id="html-report-1" class="anchor" href="#html-report-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Html report</h4>
+
+<p>Report is generated with preview for all plots created with this job.
+<img src="https://raw.githubusercontent.com/alexbuz/EC2_Metrics_Plotter/master/plot_reports/all.png" alt="ALL"></p>
+
+<h2>
+<a id="download" class="anchor" href="#download" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Download</h2>
+
+<ul>
+<li>
+<a href="https://github.com/alexbuz/EC2_Metrics_Plotter/archive/master.zip">Master Release</a> -- <code>ec2metrics 0.1.0</code>
+</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Ec2 metrics plotter maintained by <a href="https://github.com/alexbuz">alexbuz</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
