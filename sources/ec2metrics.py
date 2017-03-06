@@ -33,7 +33,7 @@ Usage:
 	[-n] --show_report  -- Open browser with html report (True).
 	
 	[-d] --plot_dir  	-- Target plot dir (plots).
-	[-e] --plot_dir  	-- Timestamp for to append to plot_dir 
+	[-e] --timestamp   	-- Timestamp for to append to plot_dir 
 	(current date).
 	
 	Index.html is generated in <plot_dir>\<timestamp>
